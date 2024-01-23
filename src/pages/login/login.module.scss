@@ -1,0 +1,117 @@
+.background-img {
+    width: 100vw;
+    height: 100vh;
+}
+
+.background {
+    overflow: hidden;
+}
+
+.login-wrapper {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login {
+    width: 400px;
+    // height: 400px;
+    background-color: #b3ddd1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    border-radius: 4px;
+    box-shadow: 1px 1px 1px #ccc;
+}
+
+.notifi {
+    text-align: center;
+    font-size: 12px;
+    background-color: #ffcc00;
+}
+
+.login-header {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 600;
+    flex-direction: column;
+}
+
+.login-header-text {
+    color: #c58ade;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-item {
+    display: flex;
+    flex-direction: column;
+    width: 68%;
+    margin: 28px 0;
+    border-radius: 8px;
+
+    .login-input {
+        margin-top: 8px;
+        height: 24px;
+        border: none;
+        border-radius: 8px;
+        padding: 4px 10px;
+        background-color: #d1dce2;
+    }
+
+    .login-input:focus {
+        outline: 0;
+    }
+}
+
+.login-submit {
+    padding: 8px 34px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    background-color: #ead2e0;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tuy-luyp-icon {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+}
+
+.error-noti-wrapper {
+    margin-top: 6px;
+    color: #e25b45;
+    text-align: center;
+}
+
+.error-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+    color: #6f89a2;
+}
+
+.login-submit:hover {
+    background-color: #edb5d2;
+
+    .icon {
+        color: #fd475d;
+    }
+}

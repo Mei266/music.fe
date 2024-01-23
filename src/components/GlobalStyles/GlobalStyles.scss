@@ -1,0 +1,40 @@
+@import 'normalize.css';
+:root {
+    --background-color-header: #0f0f0f;
+    --background-color-navbar: black;
+    --background-color-footer: #181818;
+    --background-color-home: #121212;
+    --background-color-music-item: #181818;
+    --color-display: #1ed760;
+    --color-music-item-hover: #282828;
+    --color-text-author: #a4a4a4;
+    --color-music-name: white;
+    --color-footer: #fff;
+    --color-bupple: #f26398;
+    --color-navbar-header-text: white;
+    --color-navbar-item: white;
+    --color-header: white;
+    --color-header-icon: pink;
+    --color-disable: rgb(139, 133, 133);
+    --color-author-hover: white;
+}
+
+.light-mode {
+    --background-color-header: #b1d4e0;
+    --background-color-navbar: #6da7cc;
+    --background-color-footer: #b1d4e0;
+    --background-color-home: #ecf6f3;
+    --background-color-music-item: #b8d4e0;
+    --color-display: #1f628e;
+    --color-music-item-hover: #88a9c3;
+    --color-text-author: #f7f7f7;
+    --color-music-name: #145da0;
+    --color-footer: #ecf6f3;
+    --color-bupple: #f26398;
+    --color-navbar-header-text: #ecf6f3;
+    --color-navbar-item: #ecf6f3;
+    --color-header: white;
+    --color-header-icon: #d96666;
+    --color-disable: #b1d4e0;
+    --color-author-hover: #f7f7f7;
+}

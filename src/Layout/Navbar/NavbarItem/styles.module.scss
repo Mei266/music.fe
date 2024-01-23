@@ -1,0 +1,28 @@
+.wrapper{
+    display: flex;
+    align-items: center;
+    color: var(--color-navbar-item);
+    margin: 18px 0;
+}
+
+.wrapper:hover{
+    cursor: pointer;
+}
+
+.icon{
+    display: inline;
+    margin: 0 20px 0 40px;
+}
+
+.text{
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.disable{
+    color: var(--color-disable);
+}
+
+.disable:hover{
+    cursor: default;
+}
