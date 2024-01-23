@@ -1,9 +1,5 @@
-# View website
-- Link : https://music-web-omega.vercel.app
-- For login:\
-account : hiep\
-password : hiep
 # Project structure
+
 ```bash
 .
 ├───assets
@@ -27,7 +23,9 @@ password : hiep
 │   └───profile
 └───route
 ```
+
 # Set up
+
 ## Clone project
 
 ```bash
