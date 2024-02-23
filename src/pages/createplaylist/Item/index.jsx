@@ -33,7 +33,17 @@ function Item(props) {
             </Box>
             <Box display={'flex'} flexDirection={'column'} marginLeft={2}>
                 <span style={{ fontSize: '18px', fontWeight: '600' }}>{name}</span>
-                <span>{artist_name}</span>
+                {/* <span>{artist_name}</span> */}
+                <div>
+                    {artist_name?.map((item, idx) => {
+                        return (
+                            <span key={idx}>
+                                {item}
+                                {artist_name[idx + 1] ? ', ' : ''}
+                            </span>
+                        );
+                    })}
+                </div>
             </Box>
             <Box margin={'0 10px 0 auto'}>
                 <IoMdAdd onClick={onClick} color="white" className={cx('hover')} />

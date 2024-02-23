@@ -47,7 +47,7 @@ function PlayListItem({ id, title, musics, description }) {
                             <MusicItem
                                 key={idx}
                                 musicId={item.id}
-                                src={`${rootBackend}/${item.image}`}
+                                src={`${rootBackend}${item.image}`}
                                 name={item.name}
                                 author={item.artist_name}
                                 onClick={() => {

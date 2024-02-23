@@ -66,14 +66,21 @@ function CreatePlayList() {
     }, [refeshHeart]);
 
     const addMusicToPlaylist = (musicId) => {
-        axios.put(`${baseApi}/playlist/${id}/add`, { musicId: musicId }).then((res) => {
-            console.log('Add music: ', res.data);
-            // setPlaylist(res.data);
-            setRefesh(refesh + 1);
-        });
+        axios
+            .put(`${baseApi}/playlist/${id}/add`, { music_id: musicId })
+            .then((res) => {
+                console.log('Add music: ', res.data);
+                // setPlaylist(res.data);
+                setRefesh(refesh + 1);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
     const removeMusicToPlaylist = (musicId) => {
-        axios.put(`${baseApi}/playlist/${id}/remove`, { musicId: musicId }).then((res) => {
+        let formData = new FormData();
+        formData.append('music_id', musicId);
+        axios.put(`${baseApi}/playlist/${id}/remove`, formData).then((res) => {
             console.log('Add music: ', res.data);
             // setPlaylist(res.data);
             setRefesh(refesh + 1);

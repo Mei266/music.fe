@@ -1,15 +1,59 @@
 import classNames from 'classnames/bind';
 import styles from './header.module.scss';
 import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
-import { Avatar, Button, Divider, ListItemIcon, Menu, MenuItem, Stack } from '@mui/material';
+import { Avatar, Button, Divider, InputBase, ListItemIcon, Menu, MenuItem, Stack } from '@mui/material';
+import { styled, alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 import { useState } from 'react';
 import { HiOutlineExternalLink } from 'react-icons/hi';
+import { useLocation } from 'react-router-dom';
+import SearchIcon from '@mui/icons-material/Search';
 
 const cx = classNames.bind(styles);
+const Search = styled('div')(({ theme }) => ({
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    height: '60%',
+    [theme.breakpoints.up('sm')]: {
+        marginLeft: theme.spacing(3),
+        width: 'auto',
+    },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: 'inherit',
+    '& .MuiInputBase-input': {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('md')]: {
+            width: '20ch',
+        },
+    },
+}));
 
 function Header() {
+    const location = useLocation();
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
     const open = Boolean(anchorEl);
@@ -22,12 +66,22 @@ function Header() {
 
     return (
         <div className={cx('wrapper')}>
-            <div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
                 <SlArrowLeft className={cx('left')} />
                 <SlArrowRight className={cx('right')} />
+                {location.pathname === '/search' ? (
+                    <Search>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+                    </Search>
+                ) : (
+                    ''
+                )}
             </div>
-            <Stack spacing={2} direction="row" sx={{ marginRight: '14px' }}>
-                {localStorage.getItem('isLogin') === true ? (
+            <Stack spacing={2} direction="row" sx={{ marginRight: '18px' }}>
+                {localStorage.getItem('isLogin') != true ? (
                     <>
                         <Button
                             variant="text"
@@ -40,7 +94,7 @@ function Header() {
                         <Button
                             variant="contained"
                             onClick={() => {
-                                navigate('/');
+                                navigate('/login');
                             }}
                         >
                             Login

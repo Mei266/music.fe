@@ -17,7 +17,13 @@ function MusicItem({ onClick, src, name, author, isPlaying }) {
                 <div className={cx('name')}>
                     <span>{name}</span>
                 </div>
-                <div className={cx('author')}>{author}</div>
+                {author?.map((item, idx) => {
+                    return (
+                        <div key={idx} className={cx('author')}>
+                            {item} {author[idx + 1] ? ',' : ''}
+                        </div>
+                    );
+                })}
             </div>
         </button>
     );

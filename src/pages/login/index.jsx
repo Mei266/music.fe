@@ -30,7 +30,7 @@ function Login() {
                 .then(() => {
                     login(localStorage.getItem('userid'));
                     localStorage.setItem('isLogin', true);
-                    navigate('/home');
+                    navigate('/');
                 })
                 .catch(() => {
                     setError(true);

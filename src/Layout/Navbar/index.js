@@ -58,16 +58,22 @@ function Navbar() {
             <div className={cx('first-row')}>
                 <div
                     onClick={() => {
-                        navigate('/home');
+                        navigate('/');
                     }}
                 >
                     <NavbarItem text="Trang chủ">
                         <AiFillHome className={cx('icon')} />
                     </NavbarItem>
                 </div>
-                {/* <NavbarItem disable text="Tìm kiếm">
-                    <BsSearch className={cx('icon', 'disable')} />
-                </NavbarItem> */}
+                <div
+                    onClick={() => {
+                        navigate('/search');
+                    }}
+                >
+                    <NavbarItem text="Tìm kiếm">
+                        <BsSearch className={cx('icon')} />
+                    </NavbarItem>
+                </div>
                 {/* <NavbarItem disable text="Thư viện">
                     <MdOutlineLibraryMusic className={cx('icon', 'disable')} />
                 </NavbarItem> */}

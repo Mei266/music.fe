@@ -34,28 +34,24 @@ function Home() {
         <div className={cx('wrapper')}>
             {/* <div>title</div> */}
             <div className={cx('content')}>
-                {state['isGift'] ? (
-                    <Gift />
-                ) : (
-                    musics.map((item, index) => {
-                        return (
-                            <MusicItem
-                                key={index}
-                                // musicId={item.musicId}
-                                // src={item.image}
-                                // name={item.name}
-                                // author={item.author}
-                                src={`${rootBackend}/${item.image}`}
-                                name={item.name}
-                                author={item.artist_name}
-                                onClick={() => {
-                                    handlePlay(item.id);
-                                }}
-                                isPlaying={item.id === indexList ? true : false}
-                            />
-                        );
-                    })
-                )}
+                {musics.map((item, index) => {
+                    return (
+                        <MusicItem
+                            key={index}
+                            // musicId={item.musicId}
+                            // src={item.image}
+                            // name={item.name}
+                            // author={item.author}
+                            src={`${rootBackend}${item.image}`}
+                            name={item.name}
+                            author={item.artist_name}
+                            onClick={() => {
+                                handlePlay(item.id);
+                            }}
+                            isPlaying={item.id === indexList ? true : false}
+                        />
+                    );
+                })}
             </div>
         </div>
     );

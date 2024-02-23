@@ -17,7 +17,7 @@ function DefaultLayout({ children }) {
     //     console.log(state['isLogin'])
     //     navigate('/')
     // }
-    return state['isLogin'] ? (
+    return (
         <div className={cx('wrapper')}>
             <div className={cx('left')}>
                 <Navbar />
@@ -28,8 +28,6 @@ function DefaultLayout({ children }) {
             </div>
             {state['isPlay'] ? <Footer /> : ''}
         </div>
-    ) : (
-        <Link to={'/'}>Đăng nhập</Link>
     );
 }
 
