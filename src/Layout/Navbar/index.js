@@ -84,7 +84,7 @@ function Navbar() {
                         navigate('/heart');
                     }}
                 >
-                    <NavbarItem text="Bài hát đã thích">
+                    <NavbarItem text="Bài hát yêu thích">
                         <BsHeartFill className={cx('icon')} />
                     </NavbarItem>
                 </div>

@@ -17,13 +17,12 @@ function MusicItem({ onClick, src, name, author, isPlaying }) {
                 <div className={cx('name')}>
                     <span>{name}</span>
                 </div>
-                {author?.map((item, idx) => {
-                    return (
-                        <div key={idx} className={cx('author')}>
-                            {item} {author[idx + 1] ? ',' : ''}
-                        </div>
-                    );
-                })}
+                <div className={cx('author')}>
+                    {author?.map((item, idx) => {
+                        const au_list = author[idx + 1] ? ',' : '';
+                        return item + au_list;
+                    })}
+                </div>
             </div>
         </button>
     );

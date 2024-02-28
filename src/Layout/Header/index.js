@@ -74,7 +74,13 @@ function Header() {
                         <SearchIconWrapper>
                             <SearchIcon />
                         </SearchIconWrapper>
-                        <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+                        <StyledInputBase
+                            onChange={(e) => {
+                                navigate(`/search?q=${e.target.value}`);
+                            }}
+                            placeholder="Search…"
+                            inputProps={{ 'aria-label': 'search' }}
+                        />
                     </Search>
                 ) : (
                     ''
