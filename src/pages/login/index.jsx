@@ -70,7 +70,17 @@ function Login() {
                     </div>
                     <div className={cx('login-header-text')}>
                         <span style={{ fontSize: '24px', fontWeight: '600', margin: '10px 0' }}>Đăng nhập</span>
-                        {step2 ? <Chip label={username} variant="outlined" /> : ''}
+                        {step2 ? (
+                            <Chip
+                                label={username}
+                                variant="outlined"
+                                onDelete={() => {
+                                    setStep2(false);
+                                }}
+                            />
+                        ) : (
+                            ''
+                        )}
                     </div>
                     <div className={cx('login-item')}>
                         {step2 ? (

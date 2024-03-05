@@ -4,7 +4,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import SearchItem from './SearchItem';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { baseApi, rootBackend } from '../../constant';
 
 function Search() {
@@ -12,6 +12,7 @@ function Search() {
     const [artists, setArtists] = useState(null);
     const [albums, setAlbums] = useState(null);
     const location = useLocation();
+    const navigate = useNavigate();
     let query = new URLSearchParams(location.search).get('q');
 
     useEffect(() => {
@@ -92,6 +93,9 @@ function Search() {
                     {artists?.map((item, idx) => {
                         return (
                             <SearchItem
+                                onClick={() => {
+                                    navigate(`/artist/${item?.id}`);
+                                }}
                                 key={idx}
                                 src={`${rootBackend}${item?.image}`}
                                 name={item?.name}
@@ -111,6 +115,9 @@ function Search() {
                     {albums?.map((item, idx) => {
                         return (
                             <SearchItem
+                                onClick={() => {
+                                    navigate(`/album/${item?.id}`);
+                                }}
                                 key={idx}
                                 src={`${rootBackend}${item?.image}`}
                                 name={item?.title}

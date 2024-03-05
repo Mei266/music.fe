@@ -52,6 +52,28 @@ export const AuthContextProvider = ({ children }) => {
         setIsAnh(true);
     };
 
+    const insertAfterIdOne = (newItem) => {
+        const index = musics.findIndex((item) => item.id === musicId);
+        const index_check = musics.findIndex((item) => item.id === newItem?.id);
+        if (index_check !== -1) {
+            musics.splice(index_check, 1);
+        }
+        const res = [...musics.slice(0, index + 1), newItem, ...musics.slice(index + 1)]; // Chèn newItem vào sau phần tử có id là 1
+        console.log('res: ', res);
+        setMusics(res);
+    };
+
+    const removeMusicsInQueue = (newItem) => {
+        const index_check = musics.findIndex((item) => item.id === newItem?.id);
+        if (index_check !== -1) {
+            const tmp = musics;
+            console.log('index_check: ', index_check);
+            tmp.splice(index_check, 1);
+            console.log('newQueue: ', musics);
+            setMusics(tmp);
+        }
+    };
+
     return (
         <AuthContext.Provider
             value={{
@@ -78,6 +100,8 @@ export const AuthContextProvider = ({ children }) => {
                 setMusics,
                 setMusicId,
                 setIndexList,
+                insertAfterIdOne,
+                removeMusicsInQueue,
             }}
         >
             {children}

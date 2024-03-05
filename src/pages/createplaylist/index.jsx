@@ -21,13 +21,12 @@ function CreatePlayList() {
     const [musics, setMusics] = useState([]);
     const [playlist, setPlaylist] = useState([]);
     const [refesh, setRefesh] = useState(0);
-    const [refeshHeart, setRefeshHeart] = useState(0);
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState(null);
     const [image, setImage] = useState(null);
     const [description, setDescription] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [ids, setIds] = useState([]);
+    const [heart, setHeart] = useState(null);
 
     const { id } = useParams();
 
@@ -56,14 +55,18 @@ function CreatePlayList() {
             console.log(res.data);
             setPlaylist(res.data);
         });
+        axios.get(`${baseApi}/user/${state['userid']}/heart`).then((res) => {
+            console.log(res);
+            setHeart(res.data);
+        });
     }, [refesh, id]);
 
-    useEffect(() => {
-        axios.get(`${baseApi}/user/${state['userid']}/`).then((res) => {
-            console.log(res.data.hearts);
-            setIds(res.data.hearts);
-        });
-    }, [refeshHeart]);
+    // useEffect(() => {
+    //     axios.get(`${baseApi}/user/${state['userid']}/`).then((res) => {
+    //         console.log(res.data.hearts);
+    //         setIds(res.data.hearts);
+    //     });
+    // }, [refeshHeart]);
 
     const addMusicToPlaylist = (musicId) => {
         axios
@@ -100,14 +103,16 @@ function CreatePlayList() {
     };
 
     const handleAddHeart = (musicid) => {
-        axios.post(`${baseApi}/user/${state['userid']}/music/add`, { music_id: musicid }).then((res) => {
-            setRefeshHeart(refeshHeart + 1);
+        axios.post(`${baseApi}/heart`, { user: state['userid'], music: musicid }).then((res) => {
+            // setRefeshHeart(refeshHeart + 1);
+            setRefesh(refesh + 1);
         });
     };
 
     const handleRemoveHeart = (musicid) => {
-        axios.post(`${baseApi}/user/${state['userid']}/music/remove`, { music_id: musicid }).then((res) => {
-            setRefeshHeart(refeshHeart + 1);
+        axios.post(`${baseApi}/heart/delete`, { user: state['userid'], music: musicid }).then((res) => {
+            // setRefeshHeart(refeshHeart + 1);
+            setRefesh(refesh + 1);
         });
     };
 
@@ -187,7 +192,7 @@ function CreatePlayList() {
                         <span style={{ fontSize: '24px', fontWeight: '600' }}>{playlist?.author_name}</span>
                         <BsDot />
                         <span style={{ fontSize: '24px', fontWeight: '600', marginRight: '8px' }}>
-                            {playlist?.number_of_music} bài
+                            {playlist?.music_list?.length} bài
                         </span>
                         <BiPencil
                             onClick={() => {
@@ -271,11 +276,16 @@ function CreatePlayList() {
                                 </Box>
                                 <Box display={'flex'} flexDirection={'column'} marginLeft={2}>
                                     <span style={{ fontSize: '18px', fontWeight: '600' }}>{item.name}</span>
-                                    <span>{item.artist_name}</span>
+                                    <span>
+                                        {item?.artist_name?.map((ele, idx) => {
+                                            const au_list = item?.artist_name[idx + 1] ? ',' : ' ';
+                                            return ele + au_list;
+                                        })}
+                                    </span>
                                 </Box>
                             </Box>
                             <Box width={'25%'} textAlign={'center'}>
-                                1
+                                {item?.album_name}
                             </Box>
                             <Box
                                 width={'20%'}
@@ -285,7 +295,7 @@ function CreatePlayList() {
                                 //     handleHeart(item.id);
                                 // }}
                             >
-                                {ids.includes(item?.id) ? (
+                                {heart?.find((ele) => ele.id === item.id) ? (
                                     <AiFillHeart
                                         onClick={() => {
                                             handleRemoveHeart(item.id);

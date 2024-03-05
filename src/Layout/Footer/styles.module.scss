@@ -193,3 +193,26 @@
 .random {
     color: #997dc6;
 }
+
+.abc::-webkit-scrollbar {
+    width: 10px;
+    background: #424242;
+    border-radius: 8px;
+}
+
+/* Track */
+.abc::-webkit-scrollbar-track {
+    background: #424242;
+    border-radius: 8px;
+}
+
+/* Handle */
+.abc::-webkit-scrollbar-thumb {
+    background: #686868;
+    border-radius: 8px;
+}
+
+/* Handle on hover */
+.abc::-webkit-scrollbar-thumb:hover {
+    background: #767474;
+}

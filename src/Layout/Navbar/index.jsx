@@ -2,23 +2,18 @@ import classNames from 'classnames/bind';
 import styles from './styles.module.scss';
 import { GiLoveSong } from 'react-icons/gi';
 import { AiFillHome } from 'react-icons/ai';
-import { BsSearch } from 'react-icons/bs';
-import { MdOutlineLibraryMusic } from 'react-icons/md';
 import { MdAdd } from 'react-icons/md';
 import { BsMusicNoteList } from 'react-icons/bs';
 import { BsToggleOff, BsToggleOn, BsHeartFill } from 'react-icons/bs';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import icon from '../../assets/images/gift.png';
-import icon1 from '../../assets/images/giftAnimation.gif';
 import imageMusic from '../../assets/images/music.png';
-import Baloon from '../../assets/images/baloon.png';
 import Chip from '@mui/material/Chip';
 
 import NavbarItem from './NavbarItem';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { baseApi } from '../../constant';
+import { baseApi, rootBackend } from '../../constant';
 
 const cx = classNames.bind(styles);
 
@@ -27,8 +22,14 @@ const cx = classNames.bind(styles);
 function Navbar() {
     const { state, inGift } = useContext(AuthContext);
     const [darkMode, setDarkMode] = useState(true);
+    const [artists, setArtists] = useState(null);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        axios.get(`${baseApi}/user/${state['userid']}/follow`).then((res) => {
+            setArtists(res.data);
+        });
+    }, []);
     const addDarkMode = useCallback(() => {
         document.body.classList.toggle('light-mode');
         setDarkMode(true);
@@ -40,9 +41,13 @@ function Navbar() {
     }, []);
 
     const createPlaylist = () => {
-        axios.post(`${baseApi}/user/${state['userid']}/playlist`).then((res) => {
-            navigate(`/playlist/${res.data.id}`);
-        });
+        if (state['userid'])
+            axios.post(`${baseApi}/user/${state['userid']}/playlist`).then((res) => {
+                navigate(`/playlist/${res.data.id}`);
+            });
+        else {
+            navigate('/login');
+        }
     };
 
     return (
@@ -65,18 +70,6 @@ function Navbar() {
                         <AiFillHome className={cx('icon')} />
                     </NavbarItem>
                 </div>
-                <div
-                    onClick={() => {
-                        navigate('/search');
-                    }}
-                >
-                    <NavbarItem text="Tìm kiếm">
-                        <BsSearch className={cx('icon')} />
-                    </NavbarItem>
-                </div>
-                {/* <NavbarItem disable text="Thư viện">
-                    <MdOutlineLibraryMusic className={cx('icon', 'disable')} />
-                </NavbarItem> */}
             </div>
             <div className={cx('second-row')}>
                 <div
@@ -111,7 +104,8 @@ function Navbar() {
                 </div>
                 <div
                     onClick={() => {
-                        navigate('/playlist');
+                        if (state['userid']) navigate('/playlist');
+                        else navigate('/login');
                     }}
                 >
                     <NavbarItem text="List playlist">
@@ -119,21 +113,39 @@ function Navbar() {
                     </NavbarItem>
                 </div>
             </div>
-
-            {/* {state['isAnh'] ? ( */}
-            {/* <div className={cx('third-row')} onClick={inGift}> */}
-            <div className={cx('third-row')}>
-                <div className={cx('gift-wrapper')}>
-                    {/* <BsFillGiftFill className={cx('icon')} /> */}
-                    <img className={cx('icon-animation')} src={icon1}></img>
-                    <img src={icon} className={cx('icon-gift')}></img>
+            {state['userid'] ? (
+                <div>
+                    <Chip
+                        label="Nghệ sĩ"
+                        sx={{ color: 'white', margin: '10px 0 0 20px' }}
+                        component="a"
+                        href="#basic-chip"
+                        variant="outlined"
+                        clickable
+                    />
+                    <div className={cx('abc')} style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                        {artists?.map((item, idx) => {
+                            return (
+                                <NavbarItem
+                                    onClick={() => {
+                                        navigate(`/artist/${item?.id}`);
+                                    }}
+                                    key={idx}
+                                    text={item?.name}
+                                >
+                                    <img
+                                        style={{ width: '28px', height: '28px', borderRadius: '4px' }}
+                                        src={`${rootBackend}${item?.image}`}
+                                        alt=""
+                                    />
+                                </NavbarItem>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
-            {/* ) : (
+            ) : (
                 ''
-            )} */}
-
-            {darkMode ? '' : <img className={cx('baloon')} src={Baloon} alt="#"></img>}
+            )}
         </div>
     );
 }

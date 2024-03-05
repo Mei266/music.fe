@@ -18,13 +18,15 @@ import {
 import { BsDashLg } from 'react-icons/bs';
 import MusicItem from './MusicItem';
 import Slider from 'react-slick';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { baseApi, rootBackend } from '../../constant';
 import banner1 from '../../assets/banner/banner1.jpg';
 import banner2 from '../../assets/banner/banner2.jpg';
 import banner3 from '../../assets/banner/banner3.jpg';
 import banner4 from '../../assets/banner/banner4.jpg';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 const cx = classNames.bind(styles);
 
@@ -95,7 +97,9 @@ function Home() {
     const [top, setTop] = useState(null);
     const [popular, setPopular] = useState(null);
     const [popularAlbum, setPopularAlbum] = useState(null);
+    const { state, playMusic, insertAfterIdOne } = useContext(AuthContext);
 
+    const navigate = useNavigate();
     useEffect(() => {
         axios.get(`${baseApi}/home/latest`).then((res) => {
             setLatest(res.data);
@@ -110,6 +114,11 @@ function Home() {
             setPopularAlbum(res.data);
         });
     }, []);
+
+    const handlePlayMusicInPlaylist = (id, list) => {
+        playMusic(id, list);
+    };
+
     return (
         <>
             <div className="slider" style={{ padding: '28px 38px' }}>
@@ -152,7 +161,10 @@ function Home() {
                             Xem tất cả
                         </Button>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                    <div
+                        // className={cx('abcd')}
+                        style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}
+                    >
                         {lastest?.map((item, idx) => {
                             return (
                                 <div
@@ -165,7 +177,9 @@ function Home() {
                                         marginTop: '10px',
                                         borderRadius: '4px',
                                         alignItems: 'center',
+                                        cursor: 'pointer',
                                     }}
+                                    className={cx('wrapper-item')}
                                 >
                                     <img
                                         style={{
@@ -178,6 +192,7 @@ function Home() {
                                         alt="alt"
                                     />
                                     <div
+                                        // className={cx('abcdef')}
                                         style={{
                                             display: 'flex',
                                             justifyContent: 'space-between',
@@ -185,7 +200,12 @@ function Home() {
                                             alignItems: 'center',
                                         }}
                                     >
-                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <div
+                                            style={{ display: 'flex', flexDirection: 'column' }}
+                                            onClick={() => {
+                                                handlePlayMusicInPlaylist(item.id, lastest);
+                                            }}
+                                        >
                                             <span style={{ fontSize: '16px', fontWeight: '500', marginBottom: '4px' }}>
                                                 {item.name}
                                             </span>
@@ -196,7 +216,11 @@ function Home() {
                                                 })}
                                             </span>
                                         </div>
-                                        <MoreHorizIcon />
+                                        <MoreHorizIcon
+                                            onClick={() => {
+                                                insertAfterIdOne(item, state['musicId']);
+                                            }}
+                                        />
                                     </div>
                                 </div>
                             );
@@ -209,7 +233,15 @@ function Home() {
                         {top?.map((item, idx) => {
                             let element = top_music[idx];
                             return (
-                                <div key={idx} style={{ display: 'flex', padding: '10px', alignItems: 'center' }}>
+                                <div
+                                    key={idx}
+                                    style={{
+                                        display: 'flex',
+                                        padding: '10px',
+                                        alignItems: 'center',
+                                        cursor: 'pointer',
+                                    }}
+                                >
                                     <div
                                         style={{
                                             width: '6%',
@@ -223,7 +255,12 @@ function Home() {
                                     <div style={{ width: '8%' }}>
                                         <BsDashLg />
                                     </div>
-                                    <div style={{ width: '45%', display: 'flex' }}>
+                                    <div
+                                        onClick={() => {
+                                            handlePlayMusicInPlaylist(item.id, top);
+                                        }}
+                                        style={{ width: '45%', display: 'flex' }}
+                                    >
                                         <img
                                             style={{
                                                 width: '38px',
@@ -246,7 +283,11 @@ function Home() {
                                     </div>
                                     <div style={{ width: '25%' }}>{item?.album_name}</div>
                                     <div style={{ width: '10%' }}>
-                                        <MoreHorizIcon />
+                                        <MoreHorizIcon
+                                            onClick={() => {
+                                                insertAfterIdOne(item, state['musicId']);
+                                            }}
+                                        />
                                     </div>
                                 </div>
                             );
@@ -259,8 +300,12 @@ function Home() {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', width: '90%' }}>
                         {popular?.map((item, idx) => {
+                            // console.log('popular: ', popular);
                             return (
                                 <MusicItem
+                                    onClick={() => {
+                                        handlePlayMusicInPlaylist(item.id, popular);
+                                    }}
                                     key={idx}
                                     src={`${rootBackend}${item.image}`}
                                     name={item.name}
@@ -278,6 +323,9 @@ function Home() {
                         {popularAlbum?.map((item, idx) => {
                             return (
                                 <MusicItem
+                                    onClick={() => {
+                                        navigate(`/album/${item?.id}`);
+                                    }}
                                     key={idx}
                                     src={`${rootBackend}${item.image}`}
                                     name={item.title}

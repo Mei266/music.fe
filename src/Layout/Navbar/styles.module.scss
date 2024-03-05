@@ -1,4 +1,4 @@
-.wrapper{
+.wrapper {
     background-color: var(--background-color-navbar);
     position: fixed;
     width: 240px;
@@ -6,7 +6,7 @@
     color: var(--color-navbar-header-text);
 }
 
-.header{
+.header {
     display: flex;
     height: 48px;
     align-items: center;
@@ -17,48 +17,48 @@
     font-family: Montserrat Extra-Bold;
 }
 
-.header-icon{
+.header-icon {
     color: var(--color-header-icon);
     width: 58px;
     height: 58px;
     // margin-right: 10px;
 }
 
-.header-icon-dark-mode{
+.header-icon-dark-mode {
     color: var(--color-header-icon);
     width: 40px;
     height: 40px;
     margin-right: 10px;
 }
 
-.icon{
+.icon {
     height: 28px;
     width: 28px;
 }
 
-.first-row{
+.first-row {
     margin-bottom: 4vh;
 }
 
-.disable{
+.disable {
     color: var(--color-disable);
     cursor: default;
 }
 
-.third-row{
+.third-row {
     margin-top: 6vh;
 }
 
-.icon-animation{
+.icon-animation {
     width: 28px;
 }
 
-.icon-gift{
+.icon-gift {
     width: 54px;
     height: 54px;
 }
 
-.gift-wrapper{
+.gift-wrapper {
     margin-left: 80px;
     cursor: pointer;
     display: flex;
@@ -72,14 +72,52 @@
     }
 }
 
-.icon-animation{
+.icon-animation {
     position: absolute;
     top: -34px;
     left: -6px;
 }
 
-.baloon{
+.baloon {
     width: 86px;
     // height: 24px;
     margin: 10px 0 0 40px;
+}
+.abc::-webkit-scrollbar {
+    width: 10px;
+    background: #424242;
+    border-radius: 8px;
+}
+::-webkit-scrollbar {
+    width: 12px;
+    background: #424242;
+}
+
+/* Track */
+.abc::-webkit-scrollbar-track {
+    background: #424242;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #424242;
+}
+
+/* Handle */
+.abc::-webkit-scrollbar-thumb {
+    background: #686868;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #686868;
+}
+
+/* Handle on hover */
+.abc::-webkit-scrollbar-thumb:hover {
+    background: #767474;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #767474;
 }

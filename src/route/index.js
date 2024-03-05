@@ -1,4 +1,6 @@
 import DefaultLayout from '../Layout/DefaultLayout';
+import Album from '../pages/album';
+import Aritst from '../pages/artist';
 import CreatePlayList from '../pages/createplaylist';
 import Heart from '../pages/heart';
 import Home from '../pages/home';
@@ -19,4 +21,6 @@ export const publicRoutes = [
     { path: '/playlist/:id', element: CreatePlayList, layout: DefaultLayout },
     { path: '/playlist', element: PlayList, layout: DefaultLayout },
     { path: '/lyric/:id', element: Lyric, layout: DefaultLayout },
+    { path: '/artist/:id', element: Aritst, layout: DefaultLayout },
+    { path: '/album/:id', element: Album, layout: DefaultLayout },
 ];

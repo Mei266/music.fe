@@ -30,7 +30,7 @@ const cx = classNames.bind(styles);
 const $ = document.querySelector.bind(document);
 
 function Footer() {
-    const { state, addBupple, removeBupple, setMusicId, setIndexList } = useContext(AuthContext);
+    const { state, addBupple, removeBupple, removeMusicsInQueue, setIndexList } = useContext(AuthContext);
     const { musicId, musics } = state;
     const [isPlay, setIsPlay] = useState(true);
     const [timeMusic, setTimeMusic] = useState('');
@@ -43,6 +43,17 @@ function Footer() {
     const [index, setIndex] = useState(null);
     const [open, setOpen] = useState(false);
     const [open1, setOpen1] = useState(false);
+    const [nextMusics, setNextMusics] = useState(null);
+    const [heart, setHeart] = useState(null);
+    const [refesh, setRefesh] = useState(0);
+    const [refeshMusicsInQueue, setRefeshMusicsInQueue] = useState(0);
+
+    useEffect(() => {
+        axios.get(`${baseApi}/user/${state['userid']}/heart`).then((res) => {
+            console.log(res);
+            setHeart(res.data);
+        });
+    }, [refesh]);
 
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
@@ -64,7 +75,9 @@ function Footer() {
         );
         const seconds = currentMusic.current.audioEl.current.duration;
         currentMusic.current.audioEl.current.currentTime = (percentProgress * seconds) / 100;
-        setProgressValue(`${percentProgress}%`);
+        console.log('handleChangeProgressBar-end');
+        setProgressValue(() => `${percentProgress}%`);
+        console.log('handleChangeProgressBar-end');
     };
 
     const handleChangeProgressBarVolume = (e) => {
@@ -115,9 +128,20 @@ function Footer() {
         currentMusic.current.audioEl.current.pause();
     });
 
-    const handleAddHeart = () => {};
+    const handleAddHeart = (musicid) => {
+        console.log(state['userid'], musicid);
+        if (state['userid'])
+            axios.post(`${baseApi}/heart`, { user: state['userid'], music: musicid }).then((res) => {
+                setRefesh(refesh + 1);
+            });
+    };
 
-    const handleRemoveHeart = () => {};
+    const handleRemoveHeart = (musicid) => {
+        if (state['userid'])
+            axios.post(`${baseApi}/heart/delete`, { user: state['userid'], music: musicid }).then((res) => {
+                setRefesh(refesh + 1);
+            });
+    };
 
     const next = () => {
         console.log('next');
@@ -171,6 +195,20 @@ function Footer() {
         });
     };
 
+    function filterArrayAfterIdOne(arr, id) {
+        const index = arr.findIndex((item) => item.id === id);
+        if (index === -1) {
+            return []; // Trả về mảng rỗng nếu không tìm thấy phần tử có id là 1
+        }
+        return arr.filter((item, i) => i > index); // Lọc ra các phần tử sau phần tử có id là 1
+    }
+
+    useEffect(() => {
+        const tmp = filterArrayAfterIdOne(musics, Music?.id);
+        console.log(tmp);
+        setNextMusics(tmp);
+    }, [Music, musics, refeshMusicsInQueue]);
+
     return (
         <>
             <div className={cx('wrapper')}>
@@ -188,10 +226,16 @@ function Footer() {
                         </div>
                     </div>
                     <div className={cx('music-heart')}>
-                        {Music?.heart ? (
-                            <BsFillHeartFill className={cx('music-heart-icon')} onClick={handleRemoveHeart} />
+                        {heart?.find((ele) => ele.id === Music.id) ? (
+                            <BsFillHeartFill
+                                className={cx('music-heart-icon')}
+                                onClick={() => handleRemoveHeart(Music?.id)}
+                            />
                         ) : (
-                            <AiOutlineHeart className={cx('music-heart-icon-outline')} onClick={handleAddHeart} />
+                            <AiOutlineHeart
+                                className={cx('music-heart-icon-outline')}
+                                onClick={() => handleAddHeart(Music?.id)}
+                            />
                         )}
                     </div>
                 </div>
@@ -323,21 +367,100 @@ function Footer() {
                                     borderRadius: '6px',
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
+                                    cursor: 'pointer',
                                 }}
                             >
-                                <div style={{ display: 'flex', marginRight: '120px' }}>
+                                <div style={{ display: 'flex', width: '200px' }}>
                                     <img
                                         style={{ width: '40px', height: '40px', borderRadius: '6px' }}
-                                        src={image}
+                                        src={`${rootBackend}${Music?.image}`}
                                         alt=""
                                     />
                                     <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '8px' }}>
-                                        <span>name</span>
-                                        <span>artist</span>
+                                        <span>{Music?.name}</span>
+                                        <span>
+                                            {Music?.artist_name?.map((ele, idx) => {
+                                                const au_list = Music?.artist_name[idx + 1] ? ',' : ' ';
+                                                return ele + au_list;
+                                            })}
+                                        </span>
                                     </div>
                                 </div>
-                                <CiHeart style={{ width: '24px', height: '24px' }} />
+                                {heart?.find((ele) => ele.id === Music.id) ? (
+                                    <BsFillHeartFill
+                                        className={cx('music-heart-icon')}
+                                        onClick={() => handleRemoveHeart(Music?.id)}
+                                    />
+                                ) : (
+                                    <AiOutlineHeart
+                                        className={cx('music-heart-icon-outline')}
+                                        onClick={() => handleAddHeart(Music?.id)}
+                                    />
+                                )}
+                                {/* <CiHeart style={{ width: '24px', height: '24px' }} /> */}
                                 <MoreHorizIcon />
+                            </div>
+                            <div style={{ color: 'white', margin: '8px 0 10px 0' }}>Tiếp theo</div>
+                            <div className={cx('abc')} style={{ overflowY: 'auto', maxHeight: '468px' }}>
+                                {nextMusics?.map((item, idx) => {
+                                    return (
+                                        <div
+                                            key={idx}
+                                            style={{
+                                                display: 'flex',
+                                                width: '300px',
+                                                padding: '8px',
+                                                // backgroundColor: '#ad98c0',
+                                                borderRadius: '6px',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                color: 'white',
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            <div style={{ display: 'flex', width: '200px' }}>
+                                                <img
+                                                    style={{ width: '40px', height: '40px', borderRadius: '6px' }}
+                                                    src={`${rootBackend}${item?.image}`}
+                                                    alt=""
+                                                />
+                                                <div
+                                                    style={{
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        marginLeft: '8px',
+                                                    }}
+                                                >
+                                                    <span>{item?.name}</span>
+                                                    <span>
+                                                        {item?.artist_name?.map((ele, idx) => {
+                                                            const au_list = item?.artist_name[idx + 1] ? ',' : ' ';
+                                                            return ele + au_list;
+                                                        })}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            {heart?.find((ele) => ele.id === item?.id) ? (
+                                                <BsFillHeartFill
+                                                    className={cx('music-heart-icon')}
+                                                    onClick={() => handleRemoveHeart(item?.id)}
+                                                />
+                                            ) : (
+                                                <AiOutlineHeart
+                                                    className={cx('music-heart-icon-outline')}
+                                                    onClick={() => handleAddHeart(item?.id)}
+                                                />
+                                            )}
+                                            {/* <CiHeart style={{ width: '24px', height: '24px' }} /> */}
+                                            <MoreHorizIcon
+                                                onClick={() => {
+                                                    removeMusicsInQueue(item);
+                                                    setRefeshMusicsInQueue(refeshMusicsInQueue + 1);
+                                                }}
+                                            />
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                     </Drawer>

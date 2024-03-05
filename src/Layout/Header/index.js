@@ -5,10 +5,11 @@ import { Avatar, Button, Divider, InputBase, ListItemIcon, Menu, MenuItem, Stack
 import { styled, alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { HiOutlineExternalLink } from 'react-icons/hi';
 import { useLocation } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
+import { AuthContext } from '../../context/AuthContext';
 
 const cx = classNames.bind(styles);
 const Search = styled('div')(({ theme }) => ({
@@ -53,6 +54,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function Header() {
+    const { state } = useContext(AuthContext);
     const location = useLocation();
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
@@ -63,32 +65,30 @@ function Header() {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
+    console.log('isLogin:', localStorage.getItem('isLogin'));
     return (
         <div className={cx('wrapper')}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <SlArrowLeft className={cx('left')} />
-                <SlArrowRight className={cx('right')} />
-                {location.pathname === '/search' ? (
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            onChange={(e) => {
-                                navigate(`/search?q=${e.target.value}`);
-                            }}
-                            placeholder="Search…"
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </Search>
-                ) : (
-                    ''
-                )}
+                <SlArrowRight className={cx('right')} style={{ marginRight: '60px' }} />
+                <Search>
+                    <SearchIconWrapper>
+                        <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                        onChange={(e) => {
+                            navigate(`/search?q=${e.target.value}`);
+                        }}
+                        placeholder="Search…"
+                        inputProps={{ 'aria-label': 'search' }}
+                        sx={{ width: '380px' }}
+                    />
+                </Search>
             </div>
             <Stack spacing={2} direction="row" sx={{ marginRight: '18px' }}>
-                {localStorage.getItem('isLogin') != true ? (
+                {localStorage.getItem('isLogin') !== 'true' ? (
                     <>
+                        {console.log('isLogin:', localStorage.getItem('isLogin'))}
                         <Button
                             variant="text"
                             onClick={() => {
@@ -155,13 +155,6 @@ function Header() {
                 >
                     Profile
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    My account
-                    <ListItemIcon>
-                        <HiOutlineExternalLink style={{ marginLeft: 'auto' }} />
-                    </ListItemIcon>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>Settings</MenuItem>
                 <Divider />
                 <MenuItem
                     onClick={() => {

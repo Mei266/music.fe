@@ -17,10 +17,11 @@ function Heart() {
 
     const { indexList } = state;
     useEffect(() => {
-        axios.get(`${baseApi}/user/${state['userid']}/heart`).then((res) => {
-            console.log(res);
-            setMusics(res.data);
-        });
+        if (state['userid'])
+            axios.get(`${baseApi}/user/${state['userid']}/heart`).then((res) => {
+                console.log(res);
+                setMusics(res.data);
+            });
     }, []);
 
     const handlePlay = (musicId) => {
