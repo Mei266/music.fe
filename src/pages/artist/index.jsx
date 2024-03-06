@@ -7,13 +7,16 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { baseApi, rootBackend } from '../../constant';
 import { AuthContext } from '../../context/AuthContext';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 function Aritst() {
     const [artist, setArtist] = useState(null);
     const [musics, setMusics] = useState(null);
     const [refesh, setRefesh] = useState(0);
+    const [refeshHeart, setRefeshHeart] = useState(0);
+    const [heart, setHeart] = useState(null);
     const [follow, setFollow] = useState(null);
-    const { state, playMusic } = useContext(AuthContext);
+    const { state, playMusic, insertAfterIdOne } = useContext(AuthContext);
 
     const { id } = useParams();
 
@@ -44,6 +47,31 @@ function Aritst() {
         });
     };
 
+    const handlePlayMusicInPlaylist = (id, list) => {
+        playMusic(id, list);
+    };
+
+    const handleAddHeart = (musicid) => {
+        axios.post(`${baseApi}/heart`, { user: state['userid'], music: musicid }).then((res) => {
+            // setRefeshHeart(refeshHeart + 1);
+            setRefeshHeart(refesh + 1);
+        });
+    };
+
+    const handleRemoveHeart = (musicid) => {
+        axios.post(`${baseApi}/heart/delete`, { user: state['userid'], music: musicid }).then((res) => {
+            // setRefeshHeart(refeshHeart + 1);
+            setRefeshHeart(refesh + 1);
+        });
+    };
+
+    useEffect(() => {
+        axios.get(`${baseApi}/user/${state['userid']}/heart`).then((res) => {
+            console.log(res);
+            setHeart(res.data);
+        });
+    }, [refeshHeart]);
+
     return (
         <div style={{ color: 'white' }}>
             <div style={{ height: '280px', display: 'flex', alignItems: 'center' }}>
@@ -54,11 +82,21 @@ function Aritst() {
                 />
                 <div>
                     <h1 style={{ fontSize: '48px' }}>{artist?.name}</h1>
-                    <span>Number listen</span>
+                    <span>
+                        {musics?.reduce((accumulator, currentValue) => {
+                            return accumulator + parseInt(currentValue.number_listens);
+                        }, 0)}{' '}
+                        lượt nghe
+                    </span>
                 </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-                <FaPlayCircle style={{ margin: '0 48px 0 38px', width: '64px', height: '64px' }} />
+                <FaPlayCircle
+                    onClick={() => {
+                        handlePlayMusicInPlaylist(musics[0]?.id, musics);
+                    }}
+                    style={{ margin: '0 48px 0 38px', width: '64px', height: '64px' }}
+                />
                 {follow?.find((item) => item.id === artist.id) ? (
                     <Button
                         onClick={handleRemoveFollow}
@@ -90,12 +128,13 @@ function Aritst() {
                                 alignItems: 'center',
                                 padding: '6px 38px 6px 0',
                                 margin: '10px 0',
+                                cursor: 'pointer',
                             }}
                         >
                             <div style={{ width: '8%', textAlign: 'center' }}>{idx + 1}</div>
                             <div style={{ width: '10%' }}>
                                 <img
-                                    style={{ width: '38px', height: '38px' }}
+                                    style={{ width: '38px', height: '38px', borderRadius: '4px' }}
                                     src={`${rootBackend}${item?.image}`}
                                     alt="image"
                                 />
@@ -103,11 +142,28 @@ function Aritst() {
                             <div style={{ width: '40%' }}>{item?.name}</div>
                             <div style={{ width: '20%' }}>{item?.number_listens}</div>
                             <div style={{ width: '8%' }}>
-                                <CiHeart style={{ width: '24px', height: '24px' }} />
+                                {heart?.find((ele) => ele.id === item.id) ? (
+                                    <AiFillHeart
+                                        onClick={() => {
+                                            handleRemoveHeart(item.id);
+                                        }}
+                                        color="#f26398"
+                                    />
+                                ) : (
+                                    <AiOutlineHeart
+                                        onClick={() => {
+                                            handleAddHeart(item.id);
+                                        }}
+                                    />
+                                )}
                             </div>
                             <div style={{ width: '8%' }}>{item?.duration}</div>
                             <div style={{ width: '8%' }}>
-                                <BsThreeDots />
+                                <BsThreeDots
+                                    onClick={() => {
+                                        insertAfterIdOne(item, state['musicId']);
+                                    }}
+                                />
                             </div>
                         </div>
                     );

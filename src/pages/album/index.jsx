@@ -3,13 +3,18 @@ import image from '../../assets/artist/hoangdung.jpg';
 import { FaPlayCircle } from 'react-icons/fa';
 import { BsThreeDots } from 'react-icons/bs';
 import { CiHeart } from 'react-icons/ci';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { baseApi, rootBackend } from '../../constant';
 import { useParams } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 function Album() {
     const [album, setAlbum] = useState(null);
+    const [heart, setHeart] = useState(null);
+    const [refesh, setRefesh] = useState(0);
+    const { playMusic, insertAfterIdOne, state } = useContext(AuthContext);
 
     const { id } = useParams();
 
@@ -19,6 +24,31 @@ function Album() {
             setAlbum(res.data[0]);
         });
     }, []);
+
+    const handlePlayMusicInPlaylist = (id, list) => {
+        playMusic(id, list);
+    };
+
+    const handleAddHeart = (musicid) => {
+        axios.post(`${baseApi}/heart`, { user: state['userid'], music: musicid }).then((res) => {
+            // setRefeshHeart(refeshHeart + 1);
+            setRefesh(refesh + 1);
+        });
+    };
+
+    const handleRemoveHeart = (musicid) => {
+        axios.post(`${baseApi}/heart/delete`, { user: state['userid'], music: musicid }).then((res) => {
+            // setRefeshHeart(refeshHeart + 1);
+            setRefesh(refesh + 1);
+        });
+    };
+
+    useEffect(() => {
+        axios.get(`${baseApi}/user/${state['userid']}/heart`).then((res) => {
+            console.log(res);
+            setHeart(res.data);
+        });
+    }, [refesh]);
 
     return (
         <div style={{ color: 'white' }}>
@@ -39,7 +69,12 @@ function Album() {
                 </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-                <FaPlayCircle style={{ margin: '0 34px 0 38px', width: '40px', height: '40px', color: '#1ed760' }} />
+                <FaPlayCircle
+                    onClick={() => {
+                        handlePlayMusicInPlaylist(album?.music_list[0].id, album?.music_list);
+                    }}
+                    style={{ margin: '0 34px 0 38px', width: '40px', height: '40px', color: '#1ed760' }}
+                />
                 <BsThreeDots style={{ width: '34px', height: '34px' }} />
             </div>
             <div style={{ padding: '0 38px' }}>
@@ -70,7 +105,12 @@ function Album() {
                             }}
                         >
                             <div style={{ width: '8%', textAlign: 'center' }}>{idx + 1}</div>
-                            <div style={{ width: '10%' }}>
+                            <div
+                                style={{ width: '10%' }}
+                                onClick={() => {
+                                    handlePlayMusicInPlaylist(item?.id, album?.music_list);
+                                }}
+                            >
                                 <img
                                     style={{ width: '38px', height: '38px', borderRadius: '6px' }}
                                     src={`${rootBackend}${item?.image}`}
@@ -80,11 +120,28 @@ function Album() {
                             <div style={{ width: '30%' }}>{item?.name}</div>
                             <div style={{ width: '30%', textAlign: 'center' }}>{item?.number_listens}</div>
                             <div style={{ width: '8%' }}>
-                                <CiHeart style={{ width: '24px', height: '24px' }} />
+                                {heart?.find((ele) => ele.id === item.id) ? (
+                                    <AiFillHeart
+                                        onClick={() => {
+                                            handleRemoveHeart(item.id);
+                                        }}
+                                        color="#f26398"
+                                    />
+                                ) : (
+                                    <AiOutlineHeart
+                                        onClick={() => {
+                                            handleAddHeart(item.id);
+                                        }}
+                                    />
+                                )}
                             </div>
                             <div style={{ width: '8%' }}>{item?.duration}</div>
                             <div style={{ width: '8%' }}>
-                                <BsThreeDots />
+                                <BsThreeDots
+                                    onClick={() => {
+                                        insertAfterIdOne(item, state['musicId']);
+                                    }}
+                                />
                             </div>
                         </div>
                     );

@@ -79,7 +79,7 @@ function Header() {
                         onChange={(e) => {
                             navigate(`/search?q=${e.target.value}`);
                         }}
-                        placeholder="Search…"
+                        placeholder="Tìm kiếm ..."
                         inputProps={{ 'aria-label': 'search' }}
                         sx={{ width: '380px' }}
                     />
@@ -95,7 +95,7 @@ function Header() {
                                 navigate('/register');
                             }}
                         >
-                            Sign up
+                            Đăng ký
                         </Button>
                         <Button
                             variant="contained"
@@ -103,7 +103,7 @@ function Header() {
                                 navigate('/login');
                             }}
                         >
-                            Login
+                            Đăng nhập
                         </Button>
                     </>
                 ) : (
@@ -163,7 +163,7 @@ function Header() {
                         navigate('/');
                     }}
                 >
-                    Logout
+                    Đăng xuất
                 </MenuItem>
             </Menu>
         </div>
