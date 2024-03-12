@@ -1,4 +1,4 @@
-import { Box, Button, Modal, TextField } from '@mui/material';
+import { Box, Button, Modal, TextField, Tooltip } from '@mui/material';
 import { CiMusicNote1 } from 'react-icons/ci';
 import styles from './styles.module.scss';
 import classNames from 'classnames/bind';
@@ -126,7 +126,8 @@ function CreatePlayList() {
         const formData = new FormData();
         if (title) formData.append('title', title);
         else formData.append('title', null);
-        formData.append('image', image);
+        if (image) formData.append('image', image);
+        else formData.append('image', null);
         if (description) formData.append('description', description);
         else formData.append('description', null);
         console.log(image);
@@ -180,14 +181,22 @@ function CreatePlayList() {
                     margin={'20px 20px 0 20px'}
                 >
                     {playlist?.image ? (
-                        <img style={{ width: 200, height: 200 }} src={`${rootBackend}/${playlist?.image}`} alt="" />
+                        <img
+                            style={{ width: 200, height: 200, borderRadius: '4px' }}
+                            src={`${rootBackend}${playlist?.image}`}
+                            alt=""
+                        />
                     ) : (
                         <CiMusicNote1 style={{ width: '50px', height: '50px' }} />
                     )}
                 </Box>
                 <Box marginTop={'auto'} display={'flex'} flexDirection={'column'}>
                     <span style={{ fontSize: '20px' }}>Playlist</span>
-                    <span style={{ fontSize: '40px', fontWeight: '800', margin: '20px 0' }}>{playlist?.title}</span>
+                    <Tooltip title={playlist?.description} placement="right">
+                        <span style={{ fontSize: '40px', fontWeight: '800', margin: '20px 0', cursor: 'pointer' }}>
+                            {playlist?.title}
+                        </span>
+                    </Tooltip>
                     <Box display={'flex'} alignItems={'center'}>
                         <span style={{ fontSize: '24px', fontWeight: '600' }}>{playlist?.author_name}</span>
                         <BsDot />
@@ -388,8 +397,8 @@ function CreatePlayList() {
                                 <img src={selectedImage} style={{ width: '100%', height: '100%' }} alt="" />
                             ) : playlist?.image ? (
                                 <img
-                                    style={{ width: 200, height: 200 }}
-                                    src={`${rootBackend}/${playlist?.image}`}
+                                    style={{ width: 200, height: 200, borderRadius: '4px' }}
+                                    src={`${rootBackend}${playlist?.image}`}
                                     alt=""
                                 />
                             ) : (

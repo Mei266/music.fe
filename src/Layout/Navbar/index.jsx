@@ -27,9 +27,10 @@ function Navbar() {
 
     useEffect(() => {
         axios.get(`${baseApi}/user/${state['userid']}/follow`).then((res) => {
+            console.log(res.data);
             setArtists(res.data);
         });
-    }, []);
+    }, [state['refeshA']]);
     const addDarkMode = useCallback(() => {
         document.body.classList.toggle('light-mode');
         setDarkMode(true);

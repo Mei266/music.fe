@@ -16,7 +16,7 @@ function Aritst() {
     const [refeshHeart, setRefeshHeart] = useState(0);
     const [heart, setHeart] = useState(null);
     const [follow, setFollow] = useState(null);
-    const { state, playMusic, insertAfterIdOne } = useContext(AuthContext);
+    const { state, playMusic, insertAfterIdOne, setRefeshA, refeshA } = useContext(AuthContext);
 
     const { id } = useParams();
 
@@ -95,11 +95,20 @@ function Aritst() {
                     onClick={() => {
                         handlePlayMusicInPlaylist(musics[0]?.id, musics);
                     }}
-                    style={{ margin: '0 48px 0 38px', width: '64px', height: '64px' }}
+                    style={{
+                        margin: '0 48px 0 38px',
+                        width: '64px',
+                        height: '64px',
+                        color: '#1ed760',
+                        cursor: 'pointer',
+                    }}
                 />
-                {follow?.find((item) => item.id === artist.id) ? (
+                {follow?.find((item) => item?.id === artist?.id) ? (
                     <Button
-                        onClick={handleRemoveFollow}
+                        onClick={() => {
+                            handleRemoveFollow();
+                            setRefeshA(state['refeshA'] + 1);
+                        }}
                         size="small"
                         sx={{ color: 'white', borderColor: 'white', textTransform: 'none', borderRadius: '20px' }}
                         variant="outlined"
@@ -108,7 +117,10 @@ function Aritst() {
                     </Button>
                 ) : (
                     <Button
-                        onClick={handleAddFollow}
+                        onClick={() => {
+                            handleAddFollow();
+                            setRefeshA(state['refeshA'] + 1);
+                        }}
                         size="small"
                         sx={{ color: 'white', borderColor: 'white', textTransform: 'none', borderRadius: '20px' }}
                         variant="outlined"

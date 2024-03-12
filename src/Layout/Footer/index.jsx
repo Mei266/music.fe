@@ -19,7 +19,7 @@ import Bupple from './Bupple';
 import { baseApi, rootBackend } from '../../constant';
 import axios from 'axios';
 import { BsMusicNoteList } from 'react-icons/bs';
-import { Button, Drawer } from '@mui/material';
+import { Button, Drawer, Tooltip } from '@mui/material';
 import image from '../../assets/artist/hoangdung.jpg';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { CiHeart } from 'react-icons/ci';
@@ -388,17 +388,19 @@ function Footer() {
                                 </div>
                                 {heart?.find((ele) => ele.id === Music.id) ? (
                                     <BsFillHeartFill
+                                        style={{ marginRight: '8px' }}
                                         className={cx('music-heart-icon')}
                                         onClick={() => handleRemoveHeart(Music?.id)}
                                     />
                                 ) : (
                                     <AiOutlineHeart
+                                        style={{ marginRight: '8px' }}
                                         className={cx('music-heart-icon-outline')}
                                         onClick={() => handleAddHeart(Music?.id)}
                                     />
                                 )}
                                 {/* <CiHeart style={{ width: '24px', height: '24px' }} /> */}
-                                <MoreHorizIcon />
+                                {/* <MoreHorizIcon /> */}
                             </div>
                             <div style={{ color: 'white', margin: '8px 0 10px 0' }}>Tiếp theo</div>
                             <div className={cx('abc')} style={{ overflowY: 'auto', maxHeight: '468px' }}>
@@ -452,12 +454,14 @@ function Footer() {
                                                 />
                                             )}
                                             {/* <CiHeart style={{ width: '24px', height: '24px' }} /> */}
-                                            <MoreHorizIcon
-                                                onClick={() => {
-                                                    removeMusicsInQueue(item);
-                                                    setRefeshMusicsInQueue(refeshMusicsInQueue + 1);
-                                                }}
-                                            />
+                                            <Tooltip title="Xóa khỏi danh sách phát">
+                                                <MoreHorizIcon
+                                                    onClick={() => {
+                                                        removeMusicsInQueue(item);
+                                                        setRefeshMusicsInQueue(refeshMusicsInQueue + 1);
+                                                    }}
+                                                />
+                                            </Tooltip>
                                         </div>
                                     );
                                 })}

@@ -1,4 +1,6 @@
-import React, { createContext } from 'react';
+import axios from 'axios';
+import React, { createContext, useEffect } from 'react';
+import { baseApi } from '../constant';
 
 export const AuthContext = createContext({});
 
@@ -19,12 +21,21 @@ export const AuthContextProvider = ({ children }) => {
     const [isLogin, setIsLogin] = React.useState(localStorage.getItem('isLogin'));
     const [isBupple, setIsBupple] = React.useState(false);
     const [isAnh, setIsAnh] = React.useState(false);
+    const [refeshA, setRefeshA] = React.useState(0);
     const [musics, setMusics] = React.useState([]);
     const [indexList, setIndexList] = React.useState(false);
     const [userid, setUserid] = React.useState(localStorage.getItem('userid'));
+    // const [artists, setArtists] = React.useState([]);
+
+    // useEffect(() => {
+    //     axios.get(`${baseApi}/user/${userid}/follow`).then((res) => {
+    //         console.log('userid: ', userid);
+    //         console.log('ar: ', res.data);
+    //         setArtists(res.data);
+    //     });
+    // }, [refeshA]);
     const musicNumber = 53;
     const normal = 2;
-
     const playMusic = (id, musics) => {
         setMusics(musics);
         setIsPlay(true);
@@ -53,14 +64,17 @@ export const AuthContextProvider = ({ children }) => {
     };
 
     const insertAfterIdOne = (newItem) => {
-        const index = musics.findIndex((item) => item.id === musicId);
-        const index_check = musics.findIndex((item) => item.id === newItem?.id);
-        if (index_check !== -1) {
-            musics.splice(index_check, 1);
+        console.log('newItem: ', newItem);
+        if (newItem != musicId) {
+            const index = musics.findIndex((item) => item.id === musicId);
+            const index_check = musics.findIndex((item) => item.id === newItem?.id);
+            if (index_check !== -1) {
+                musics.splice(index_check, 1);
+            }
+            const res = [...musics.slice(0, index + 1), newItem, ...musics.slice(index + 1)]; // Chèn newItem vào sau phần tử có id là 1
+            console.log('res: ', res);
+            setMusics(res);
         }
-        const res = [...musics.slice(0, index + 1), newItem, ...musics.slice(index + 1)]; // Chèn newItem vào sau phần tử có id là 1
-        console.log('res: ', res);
-        setMusics(res);
     };
 
     const removeMusicsInQueue = (newItem) => {
@@ -90,6 +104,8 @@ export const AuthContextProvider = ({ children }) => {
                     musics,
                     indexList,
                     userid,
+                    refeshA,
+                    // artists,
                 },
                 playMusic,
                 inGift,
@@ -102,6 +118,8 @@ export const AuthContextProvider = ({ children }) => {
                 setIndexList,
                 insertAfterIdOne,
                 removeMusicsInQueue,
+                setRefeshA,
+                // setArtists,
             }}
         >
             {children}

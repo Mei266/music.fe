@@ -73,7 +73,13 @@ function Album() {
                     onClick={() => {
                         handlePlayMusicInPlaylist(album?.music_list[0].id, album?.music_list);
                     }}
-                    style={{ margin: '0 34px 0 38px', width: '40px', height: '40px', color: '#1ed760' }}
+                    style={{
+                        margin: '0 34px 0 38px',
+                        width: '40px',
+                        height: '40px',
+                        color: '#1ed760',
+                        cursor: 'pointer',
+                    }}
                 />
                 <BsThreeDots style={{ width: '34px', height: '34px' }} />
             </div>

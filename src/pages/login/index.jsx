@@ -1,7 +1,7 @@
 import styles from './login.module.scss';
 import classNames from 'classnames/bind';
 import { useNavigate } from 'react-router-dom';
-import icon from '../../assets/images/icon.png';
+import icon from '../../assets/images/icon.jpg';
 import background from '../../assets/images/background.jpg';
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';

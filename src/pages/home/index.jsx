@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 import styles from './home.module.scss';
 import classNames from 'classnames/bind';
 import image from '../../assets/artist/hoangdung.jpg';
@@ -216,11 +216,13 @@ function Home() {
                                                 })}
                                             </span>
                                         </div>
-                                        <MoreHorizIcon
-                                            onClick={() => {
-                                                insertAfterIdOne(item, state['musicId']);
-                                            }}
-                                        />
+                                        <Tooltip title="Thêm vào danh sách phát">
+                                            <MoreHorizIcon
+                                                onClick={() => {
+                                                    insertAfterIdOne(item, state['musicId']);
+                                                }}
+                                            />
+                                        </Tooltip>
                                     </div>
                                 </div>
                             );
@@ -283,11 +285,13 @@ function Home() {
                                     </div>
                                     <div style={{ width: '25%' }}>{item?.album_name}</div>
                                     <div style={{ width: '10%' }}>
-                                        <MoreHorizIcon
-                                            onClick={() => {
-                                                insertAfterIdOne(item, state['musicId']);
-                                            }}
-                                        />
+                                        <Tooltip title="Thêm vào danh sách phát">
+                                            <MoreHorizIcon
+                                                onClick={() => {
+                                                    insertAfterIdOne(item, state['musicId']);
+                                                }}
+                                            />
+                                        </Tooltip>
                                     </div>
                                 </div>
                             );
