@@ -9,6 +9,8 @@ import { AiFillHeart } from 'react-icons/ai';
 import { Chip, TextField } from '@mui/material';
 import axios from 'axios';
 import { baseApi } from '../../constant';
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
 
 const cx = classNames.bind(styles);
 
@@ -55,6 +57,61 @@ function Login() {
                     setErrorMessage(err.response?.data?.message);
                 });
         }
+    };
+
+    const checkGmail = (username) => {
+        axios
+            .post(`${baseApi}/login/username`, { username: username })
+            .then((res) => {
+                console.log(res);
+                return res.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const responseMessage = (response) => {
+        console.log(response.credential);
+        const profile = jwtDecode(response.credential);
+        console.log('profile: ', profile);
+
+        axios
+            .post(`${baseApi}/login/username`, { username: profile?.email })
+            .then((res) => {
+                console.log(res);
+                const check = res.data;
+                if (check.acept) {
+                    localStorage.setItem('userid', check.userid);
+                    localStorage.setItem('username', check.username);
+                    localStorage.setItem('image', profile.picture);
+                    localStorage.setItem('isLogin', true);
+                    login(localStorage.getItem('userid'));
+                    navigate('/');
+                } else {
+                    var ngayHienTai = new Date();
+                    const data = {
+                        username: profile.email,
+                        password: '23092001',
+                    };
+                    axios.post(`${baseApi}/user/register`, data).then((res) => {
+                        localStorage.setItem('userid', res.data.id);
+                        localStorage.setItem('username', res.data.username);
+                        localStorage.setItem('image', profile.picture);
+                        login(localStorage.getItem('userid'));
+                        localStorage.setItem('isLogin', true);
+                        navigate('/');
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        console.log('logout');
+        googleLogout();
+    };
+    const handleErrorMessage = (error) => {
+        console.log(error);
     };
 
     return (
@@ -117,8 +174,12 @@ function Login() {
                         </span>
                     </div>
                     <button className={cx('login-submit')} onClick={handleSubmit}>
-                        <AiFillHeart className={cx('icon')} />
+                        {/* <AiFillHeart className={cx('icon')} /> */}
+                        <span style={{ fontSize: '16px', fontWeight: '500', color: '#6f89a2' }}>Tiếp theo</span>
                     </button>
+                    <div style={{ margin: '10px 0 20px 0' }}>
+                        <GoogleLogin onSuccess={responseMessage} onError={handleErrorMessage} />
+                    </div>
                 </div>
             </div>
         </div>

@@ -63,10 +63,12 @@ function Search() {
                 }
             });
             console.log(maxMusic?.number_listens, maxTotalNum, maxTotalNumAr);
-            if (maxMusic?.number_listens >= maxTotalNum && maxMusic?.number_listens >= maxTotalNumAr) {
+            const music_count = maxMusic?.number_listens ? maxMusic?.number_listens : -Infinity;
+            if (music_count >= maxTotalNum && music_count >= maxTotalNumAr) {
                 setTop(maxMusic);
                 setType('music');
-            } else if (maxTotalNum > maxMusic?.number_listens && maxTotalNum > maxTotalNumAr) {
+            } else if (maxTotalNum > music_count && maxTotalNum > maxTotalNumAr) {
+                console.log('maxTotalNumAlbum: ', maxTotalNumAlbum);
                 setTop(maxTotalNumAlbum);
                 setType('album');
             } else {
@@ -100,7 +102,7 @@ function Search() {
     const handlePlayMusicInPlaylist = (id, list) => {
         playMusic(id, list);
     };
-
+    console.log('top: ', top);
     return (
         <div style={{ color: 'white', padding: '28px 56px' }}>
             <div style={{ display: 'flex', color: 'white', justifyContent: 'space-between' }}>
@@ -121,16 +123,20 @@ function Search() {
                                 navigate(`/artist/${top?.id}`);
                             } else if (type === 'album') {
                                 navigate(`/album/${top?.id}`);
-                            } else {
+                            } else if (type === 'music') {
                                 handlePlayMusicInPlaylist(top?.id, musics);
                             }
                         }}
                     >
-                        <img
-                            style={{ width: '88px', height: '88px', borderRadius: '4px' }}
-                            src={`${rootBackend}${top?.image}`}
-                            alt=""
-                        />
+                        {top ? (
+                            <img
+                                style={{ width: '88px', height: '88px', borderRadius: '4px' }}
+                                src={`${rootBackend}${top?.image}`}
+                                alt=""
+                            />
+                        ) : (
+                            <span>Không tìm thấy kết quả</span>
+                        )}
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <span style={{ color: 'white', fontSize: '28px', fontWeight: '600' }}>
                                 {type === 'album' ? top?.title : top?.name}
@@ -148,7 +154,7 @@ function Search() {
                 </div>
                 <div style={{ width: '58%' }}>
                     <div style={{ color: 'white', fontSize: '26px', fontWeight: '600', marginBottom: '6px' }}>
-                        Songs
+                        Bài hát
                     </div>
                     <div>
                         {musics?.map((item, idx) => {

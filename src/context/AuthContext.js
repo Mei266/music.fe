@@ -64,16 +64,19 @@ export const AuthContextProvider = ({ children }) => {
     };
 
     const insertAfterIdOne = (newItem) => {
-        console.log('newItem: ', newItem);
-        if (newItem != musicId) {
+        // console.log('newItem: ', newItem);
+        // const newItem = song;
+        if (newItem?.id != musicId) {
             const index = musics.findIndex((item) => item.id === musicId);
             const index_check = musics.findIndex((item) => item.id === newItem?.id);
+            let updatedMusics = [...musics];
             if (index_check !== -1) {
-                musics.splice(index_check, 1);
+                updatedMusics.splice(index_check, 1);
             }
-            const res = [...musics.slice(0, index + 1), newItem, ...musics.slice(index + 1)]; // Chèn newItem vào sau phần tử có id là 1
-            console.log('res: ', res);
-            setMusics(res);
+            // const res = [...musics.slice(0, index + 1), newItem, ...musics.slice(index + 1)]; // Chèn newItem vào sau phần tử có id là 1
+            updatedMusics.splice(index + 1, 0, newItem);
+            console.log('updatedMusics: ', updatedMusics);
+            setMusics(updatedMusics);
         }
     };
 

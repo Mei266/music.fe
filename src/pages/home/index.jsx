@@ -1,7 +1,6 @@
 import { Button, Tooltip } from '@mui/material';
 import styles from './home.module.scss';
 import classNames from 'classnames/bind';
-import image from '../../assets/artist/hoangdung.jpg';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import {
     RiNumber0,
@@ -168,7 +167,7 @@ function Home() {
                         {lastest?.map((item, idx) => {
                             return (
                                 <div
-                                    key={idx}
+                                    key={item?.id + 'lastest'}
                                     style={{
                                         width: '46%',
                                         display: 'flex',
@@ -219,7 +218,9 @@ function Home() {
                                         <Tooltip title="Thêm vào danh sách phát">
                                             <MoreHorizIcon
                                                 onClick={() => {
-                                                    insertAfterIdOne(item, state['musicId']);
+                                                    const newItem = item;
+                                                    insertAfterIdOne(newItem);
+                                                    // console.log('lastest after: ', lastest[idx]);
                                                 }}
                                             />
                                         </Tooltip>

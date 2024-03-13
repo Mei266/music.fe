@@ -3,13 +3,7 @@ import classNames from 'classnames/bind';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { RxMixerHorizontal } from 'react-icons/rx';
 import { IoPlayBack, IoPlayForward } from 'react-icons/io5';
-import {
-    BsFillPlayCircleFill,
-    BsPauseCircleFill,
-    BsFillHeartFill,
-    BsFillBalloonFill,
-    BsClockFill,
-} from 'react-icons/bs';
+import { BsFillPlayCircleFill, BsPauseCircleFill, BsFillHeartFill, BsClockFill } from 'react-icons/bs';
 import { RiRepeatLine } from 'react-icons/ri';
 import { BiVolumeLow } from 'react-icons/bi';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
@@ -20,9 +14,7 @@ import { baseApi, rootBackend } from '../../constant';
 import axios from 'axios';
 import { BsMusicNoteList } from 'react-icons/bs';
 import { Button, Drawer, Tooltip } from '@mui/material';
-import image from '../../assets/artist/hoangdung.jpg';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { CiHeart } from 'react-icons/ci';
 import { MdOutlineLyrics } from 'react-icons/md';
 
 const cx = classNames.bind(styles);
@@ -215,7 +207,11 @@ function Footer() {
                 {state['isBupple'] ? <Bupple /> : ''}
                 <div className={cx('column-1')}>
                     <div className={cx('music-img')}>
-                        <img src={state['isPlay'] ? `${rootBackend}${Music?.image}` : null} alt="#"></img>
+                        <img
+                            style={{ borderRadius: '4px' }}
+                            src={state['isPlay'] ? `${rootBackend}${Music?.image}` : null}
+                            alt="#"
+                        ></img>
                     </div>
                     <div className={cx('music-info')}>
                         <div className={cx('music-info-name')}>

@@ -24,8 +24,12 @@ function Register() {
     const handleSubmit = () => {
         axios
             .post(`${baseApi}/user/register`, { username: username, password: password })
-            .then(() => {
-                navigate('/home');
+            .then((res) => {
+                localStorage.setItem('userid', res.data.userid);
+                localStorage.setItem('username', res.data.username);
+                login(localStorage.getItem('userid'));
+                localStorage.setItem('isLogin', true);
+                navigate('/');
             })
             .catch((err) => {
                 setError(true);

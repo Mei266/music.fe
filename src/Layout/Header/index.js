@@ -1,12 +1,11 @@
 import classNames from 'classnames/bind';
 import styles from './header.module.scss';
 import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
-import { Avatar, Button, Divider, InputBase, ListItemIcon, Menu, MenuItem, Stack } from '@mui/material';
+import { Avatar, Button, Divider, InputBase, Menu, MenuItem, Stack } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
-import { useContext, useState } from 'react';
-import { HiOutlineExternalLink } from 'react-icons/hi';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { AuthContext } from '../../context/AuthContext';
@@ -57,20 +56,42 @@ function Header() {
     const { state } = useContext(AuthContext);
     const location = useLocation();
     const [anchorEl, setAnchorEl] = useState(null);
+    const [picture, setPicture] = useState(null);
     const navigate = useNavigate();
     const open = Boolean(anchorEl);
+
+    const goBack = () => {
+        navigate(-1);
+    };
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
         setAnchorEl(null);
     };
+    useEffect(() => {
+        const tmp = localStorage.getItem('image') || null;
+        if (tmp) {
+            setPicture(tmp);
+        }
+    }, []);
     console.log('isLogin:', localStorage.getItem('isLogin'));
     return (
         <div className={cx('wrapper')}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-                <SlArrowLeft className={cx('left')} />
-                <SlArrowRight className={cx('right')} style={{ marginRight: '60px' }} />
+                <SlArrowLeft
+                    onClick={() => {
+                        goBack();
+                    }}
+                    className={cx('left')}
+                />
+                <SlArrowRight
+                    onClick={() => {
+                        goBack();
+                    }}
+                    className={cx('right')}
+                    style={{ marginRight: '60px' }}
+                />
                 <Search>
                     <SearchIconWrapper>
                         <SearchIcon />
@@ -106,6 +127,8 @@ function Header() {
                             Đăng nhập
                         </Button>
                     </>
+                ) : picture ? (
+                    <Avatar src={picture} onClick={handleClick} />
                 ) : (
                     <Avatar alt="user" sx={{ cursor: 'pointer' }} onClick={handleClick}>
                         <FaUser />

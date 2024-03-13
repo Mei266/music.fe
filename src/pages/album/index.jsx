@@ -1,14 +1,13 @@
-import { Avatar, Box, Button } from '@mui/material';
-import image from '../../assets/artist/hoangdung.jpg';
+import { Avatar, Box, Tooltip } from '@mui/material';
 import { FaPlayCircle } from 'react-icons/fa';
 import { BsThreeDots } from 'react-icons/bs';
-import { CiHeart } from 'react-icons/ci';
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { baseApi, rootBackend } from '../../constant';
 import { useParams } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 function Album() {
     const [album, setAlbum] = useState(null);
@@ -50,6 +49,7 @@ function Album() {
         });
     }, [refesh]);
 
+    console.log('album: ', album);
     return (
         <div style={{ color: 'white' }}>
             <div style={{ height: '280px', display: 'flex', alignItems: 'center' }}>
@@ -101,7 +101,7 @@ function Album() {
                 {album?.music_list?.map((item, idx) => {
                     return (
                         <div
-                            key={idx}
+                            key={idx + 101}
                             style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -143,11 +143,13 @@ function Album() {
                             </div>
                             <div style={{ width: '8%' }}>{item?.duration}</div>
                             <div style={{ width: '8%' }}>
-                                <BsThreeDots
-                                    onClick={() => {
-                                        insertAfterIdOne(item, state['musicId']);
-                                    }}
-                                />
+                                <Tooltip title="Thêm vào danh sách phát" color="white">
+                                    <MoreHorizIcon
+                                        onClick={() => {
+                                            insertAfterIdOne(item);
+                                        }}
+                                    />
+                                </Tooltip>
                             </div>
                         </div>
                     );

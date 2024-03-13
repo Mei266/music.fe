@@ -1,13 +1,13 @@
-import { Avatar, Button } from '@mui/material';
+import { Avatar, Button, Tooltip } from '@mui/material';
 import { FaPlayCircle } from 'react-icons/fa';
 import { BsThreeDots } from 'react-icons/bs';
-import { CiHeart } from 'react-icons/ci';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { baseApi, rootBackend } from '../../constant';
 import { AuthContext } from '../../context/AuthContext';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 function Aritst() {
     const [artist, setArtist] = useState(null);
@@ -171,11 +171,13 @@ function Aritst() {
                             </div>
                             <div style={{ width: '8%' }}>{item?.duration}</div>
                             <div style={{ width: '8%' }}>
-                                <BsThreeDots
-                                    onClick={() => {
-                                        insertAfterIdOne(item, state['musicId']);
-                                    }}
-                                />
+                                <Tooltip color="white" title="Thêm vào danh sách phát">
+                                    <MoreHorizIcon
+                                        onClick={() => {
+                                            insertAfterIdOne(item);
+                                        }}
+                                    />
+                                </Tooltip>
                             </div>
                         </div>
                     );
