@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { BsDot } from 'react-icons/bs';
 
 function Album() {
     const [album, setAlbum] = useState(null);
@@ -60,12 +61,16 @@ function Album() {
                 />
                 <div>
                     <h1 style={{ fontSize: '48px' }}>{album?.title}</h1>
-                    <span>
-                        {album?.music_list?.reduce((accumulator, currentValue) => {
-                            return accumulator + parseInt(currentValue.number_listens);
-                        }, 0)}{' '}
-                        lượt nghe
-                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <span>{album?.artist_name[0]}</span>
+                        <BsDot />
+                        <span>
+                            {album?.music_list?.reduce((accumulator, currentValue) => {
+                                return accumulator + parseInt(currentValue.number_listens);
+                            }, 0)}{' '}
+                            lượt nghe
+                        </span>
+                    </div>
                 </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>

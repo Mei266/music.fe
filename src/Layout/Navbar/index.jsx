@@ -9,6 +9,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import imageMusic from '../../assets/images/music.png';
 import Chip from '@mui/material/Chip';
+import icon from '../../assets/images/icon.jpg';
 
 import NavbarItem from './NavbarItem';
 import { useNavigate } from 'react-router-dom';
@@ -53,13 +54,9 @@ function Navbar() {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('header')}>
-                {darkMode ? (
-                    <GiLoveSong className={cx('header-icon-dark-mode')} />
-                ) : (
-                    <img className={cx('header-icon')} src={imageMusic} alt="#"></img>
-                )}
-                <span>Music</span>
+            <div className={cx('header')} style={{ display: 'flex' }}>
+                <img className={cx('header-icon')} style={{ borderRadius: '50%' }} src={icon} alt="#"></img>
+                <span style={{ fontSize: '24px', marginLeft: '6px', fontStyle: 'italic' }}>Soothing Melodies</span>
             </div>
             <div className={cx('first-row')}>
                 <div

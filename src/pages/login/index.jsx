@@ -117,9 +117,9 @@ function Login() {
     return (
         <div className={cx('wrapper')}>
             {console.log(step2, username)}
-            <div className={cx('background')}>
+            {/* <div className={cx('background')}>
                 <img className={cx('background-img')} src={background} alt="#"></img>
-            </div>
+            </div> */}
             <div className={cx('login-wrapper')}>
                 <div className={cx('login')}>
                     <div className={cx('login-header')}>
@@ -131,6 +131,14 @@ function Login() {
                             <Chip
                                 label={username}
                                 variant="outlined"
+                                sx={{
+                                    color: 'white', // Màu văn bản
+                                    backgroundColor: 'transparent', // Đặt nền trong suốt (hoặc tùy chỉnh màu nền)
+                                    borderColor: 'white', // Màu viền (nếu cần)
+                                    '& .MuiChip-deleteIcon': {
+                                        color: 'white', // Màu biểu tượng xóa (nếu có)
+                                    },
+                                }}
                                 onDelete={() => {
                                     setStep2(false);
                                 }}
@@ -145,8 +153,30 @@ function Login() {
                                 onChange={(e) => {
                                     setPassword(e.target.value);
                                 }}
+                                sx={{
+                                    width: '100%',
+                                    '& .MuiInputBase-input': {
+                                        color: 'white', // Màu văn bản
+                                    },
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: 'white', // Màu viền
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: 'white',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: 'white',
+                                        },
+                                    },
+                                    '& .MuiInputLabel-root': {
+                                        color: 'white', // Màu của label
+                                    },
+                                    '& .MuiInputLabel-root.Mui-focused': {
+                                        color: 'white',
+                                    },
+                                }}
                                 value={password}
-                                sx={{ width: '100%' }}
                                 label="Password"
                                 variant="outlined"
                                 type="password"
@@ -158,7 +188,31 @@ function Login() {
                                 }}
                                 error={error}
                                 value={username}
-                                sx={{ width: '100%' }}
+                                // sx={{ width: '100%' }}
+                                sx={{
+                                    width: '100%',
+                                    '& .MuiInputBase-input': {
+                                        color: 'white', // Màu văn bản
+                                    },
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: 'white', // Màu viền
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: 'white',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: 'white',
+                                        },
+                                    },
+                                    '& .MuiInputLabel-root': {
+                                        color: 'white', // Màu của label
+                                    },
+                                    '& .MuiInputLabel-root.Mui-focused': {
+                                        color: 'white',
+                                    },
+                                }}
+                                color="success"
                                 label="Username"
                                 variant="outlined"
                             />
@@ -168,14 +222,26 @@ function Login() {
                             onClick={() => {
                                 navigate('/register');
                             }}
-                            style={{ marginLeft: 'auto', color: 'blue', fontSize: '14px', cursor: 'pointer' }}
+                            style={{
+                                marginLeft: 'auto',
+                                color: 'blue',
+                                fontSize: '14px',
+                                cursor: 'pointer',
+                                color: 'white',
+                                fontWeight: '600',
+                                textDecoration: 'underline',
+                            }}
                         >
                             Đăng ký
                         </span>
                     </div>
-                    <button className={cx('login-submit')} onClick={handleSubmit}>
+                    <button
+                        className={cx('login-submit')}
+                        style={{ color: 'black', backgroundColor: '#1DB954' }}
+                        onClick={handleSubmit}
+                    >
                         {/* <AiFillHeart className={cx('icon')} /> */}
-                        <span style={{ fontSize: '16px', fontWeight: '500', color: '#6f89a2' }}>Tiếp theo</span>
+                        <span style={{ fontSize: '16px', fontWeight: '500' }}>Tiếp theo</span>
                     </button>
                     <div style={{ margin: '10px 0 20px 0' }}>
                         <GoogleLogin onSuccess={responseMessage} onError={handleErrorMessage} />

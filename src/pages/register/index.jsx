@@ -1,7 +1,7 @@
 import styles from './login.module.scss';
 import classNames from 'classnames/bind';
 import { useNavigate } from 'react-router-dom';
-import icon from '../../assets/images/icon.png';
+import icon from '../../assets/images/icon.jpg';
 import background from '../../assets/images/background.jpg';
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
@@ -39,9 +39,9 @@ function Register() {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('background')}>
+            {/* <div className={cx('background')}>
                 <img className={cx('background-img')} src={background} alt="#"></img>
-            </div>
+            </div> */}
             <div className={cx('login-wrapper')}>
                 <div className={cx('login')}>
                     <div className={cx('login-header')}>
@@ -57,7 +57,30 @@ function Register() {
                             }}
                             error={error}
                             value={username}
-                            sx={{ width: '100%', marginBottom: '18px' }}
+                            sx={{
+                                width: '100%',
+                                marginBottom: '18px',
+                                '& .MuiInputBase-input': {
+                                    color: 'white', // Màu văn bản
+                                },
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: 'white', // Màu viền
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: 'white',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: 'white',
+                                    },
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: 'white', // Màu của label
+                                },
+                                '& .MuiInputLabel-root.Mui-focused': {
+                                    color: 'white',
+                                },
+                            }}
                             label="Username"
                             variant="outlined"
                         />
@@ -66,7 +89,29 @@ function Register() {
                                 setPassword(e.target.value);
                             }}
                             value={password}
-                            sx={{ width: '100%' }}
+                            sx={{
+                                width: '100%',
+                                '& .MuiInputBase-input': {
+                                    color: 'white', // Màu văn bản
+                                },
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: 'white', // Màu viền
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: 'white',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: 'white',
+                                    },
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: 'white', // Màu của label
+                                },
+                                '& .MuiInputLabel-root.Mui-focused': {
+                                    color: 'white',
+                                },
+                            }}
                             label="Password"
                             variant="outlined"
                             type="password"
@@ -80,8 +125,16 @@ function Register() {
                             ''
                         )} */}
                     </div>
-                    <button className={cx('login-submit')} onClick={handleSubmit}>
+                    {/* <button className={cx('login-submit')} onClick={handleSubmit}>
                         <AiFillHeart className={cx('icon')} />
+                    </button> */}
+                    <button
+                        className={cx('login-submit')}
+                        style={{ color: 'black', backgroundColor: '#1DB954' }}
+                        onClick={handleSubmit}
+                    >
+                        {/* <AiFillHeart className={cx('icon')} /> */}
+                        <span style={{ fontSize: '16px', fontWeight: '500' }}>Đăng ký</span>
                     </button>
                 </div>
             </div>
